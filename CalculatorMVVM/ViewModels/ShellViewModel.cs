@@ -19,23 +19,32 @@ namespace CalculatorMVVM.ViewModels
 
         public string SetTitle { get; } = "Calculator WPF";
 
-        private string _calculatorTextChange;
-        private string CalculatorTextChange
+        public string _expression;
+        public string Expression
         {
-            get { return _calculatorTextChange; }
-            set { SetProperty(ref _calculatorTextChange, value); }
+            get => _expression;
+            set => SetProperty(ref _expression, value);
         }
 
-        public DelegateCommand AddNumberCommand { get; set; }
-
+        public DelegateCommand<string> AddNumberCommand { get; set; }
+        public DelegateCommand ClearCommand { get; set; }
+        public DelegateCommand EqualsCommand { get; set; }
         protected override void RegisterCommands()
         {
-            AddNumberCommand = new DelegateCommand(AddNumber);
+            AddNumberCommand = new DelegateCommand<string>(AddNumber);
+            ClearCommand = new DelegateCommand(Clear);
+         
         }
 
-        private void AddNumber()
+        private void AddNumber(string buttonValue)
         {
-            CalculatorTextChange = "5";
+            Expression += buttonValue.ToString();
         }
+
+        private void Clear()
+        {
+            Expression = string.Empty;
+        }
+       
     }
 }

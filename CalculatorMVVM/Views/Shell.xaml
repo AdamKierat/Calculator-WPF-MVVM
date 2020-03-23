@@ -19,7 +19,7 @@
             <Setter Property="Margin" Value="3"></Setter>
             <Setter Property="FontSize" Value="25"></Setter>
             <Setter Property="Command" Value="{Binding AddNumberCommand}" ></Setter>
-           
+            <Setter Property="CommandParameter" Value="{Binding Content, RelativeSource = {RelativeSource Self}}"></Setter>
         </Style>
 
         <Style TargetType="TextBox">
@@ -28,6 +28,7 @@
             <Setter Property="BorderBrush" Value="Black"></Setter>
             <Setter Property="Margin" Value="5"></Setter>
             <Setter Property="FontSize" Value="30"></Setter>
+          
         </Style>
 
     </Window.Resources>
@@ -58,22 +59,25 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <TextBox Text="{Binding CalculatorTextChange}" Grid.ColumnSpan="4" Grid.Column="1" Grid.Row="1"></TextBox>
+        <TextBox Text="{Binding Expression}" Grid.ColumnSpan="4" Grid.Column="1" Grid.Row="1"></TextBox>
 
         <Button Grid.Row="2" Grid.Column="1" Content="7"></Button>
         <Button Grid.Row="2" Grid.Column="2" Content="8"></Button>
         <Button Grid.Row="2" Grid.Column="3" Content="9"></Button>
-        <Button  Grid.Row="2" Grid.Column="4" Content=""></Button>
+        <Button  Grid.Row="2" Grid.Column="4" Content="+"></Button>
+        <Button  Grid.Row="2" Grid.Column="5" Content="C"></Button>
 
         <Button Grid.Row="3" Grid.Column="1" Content="4"></Button>
         <Button Grid.Row="3" Grid.Column="2" Content="5"></Button>
         <Button Grid.Row="3" Grid.Column="3" Content="6"></Button>
         <Button Grid.Row="3" Grid.Column="4" Content="-"></Button>
+        <Button Command="{Binding ClearCommand}" Grid.Row="3" Grid.Column="5" Content="CE"></Button>
 
         <Button Grid.Row="4" Grid.Column="1" Content="1"></Button>
         <Button Grid.Row="4" Grid.Column="2" Content="2"></Button>
         <Button Grid.Row="4" Grid.Column="3" Content="3"></Button>
         <Button Grid.Row="4" Grid.Column="4" Content="*"></Button>
+        <Button Grid.Row="4" Grid.RowSpan="2" Grid.Column="5" Content="="></Button>
 
 
         <Button Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="0"></Button>
