@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using CalculatorMVVM.App_Start;
 
 namespace CalculatorMVVM
 {
@@ -13,5 +14,9 @@ namespace CalculatorMVVM
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            new BootStrapper().Run();
+        }
     }
 }
