@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Prism.Mvvm;
 
 namespace CalculatorMVVM.ViewModels.Bases
 {
-    public class ViewModelBase:BindableBase
+    public abstract class ViewModelBase:BindableBase
     {
+        protected ViewModelBase()
+        {
+            RegisterCommands();
+        }
+
+        protected virtual void RegisterCommands() {}
     }
 }
