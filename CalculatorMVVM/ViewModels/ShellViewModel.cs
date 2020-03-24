@@ -12,11 +12,14 @@ using Prism.Mvvm;
 
 namespace CalculatorMVVM.ViewModels
 {
-    public class ShellViewModel:ViewModelBase
+    public class ShellViewModel : ViewModelBase
     {
         private readonly ICalcualtor _calcualtor;
         private bool hasCalculated;
         private bool DoubledCalcuclatorOperation = false;
+
+        
+
         public ShellViewModel(ICalcualtor calcualtor)
         {
             _calcualtor = calcualtor;
@@ -30,49 +33,64 @@ namespace CalculatorMVVM.ViewModels
             get => _expression;
             set => SetProperty(ref _expression, value);
         }
-
         public DelegateCommand<string> AddNumberCommand { get; set; }
-        public DelegateCommand ClearCommand { get; set; }
         public DelegateCommand EqualsCommand { get; set; }
-        public DelegateCommand LastCharacterDelate { get; set; }
+        public DelegateCommand ClearCommand { get; set; }
+        public DelegateCommand DelateLastCharCommand { get; set; }
         protected override void RegisterCommands()
         {
             AddNumberCommand = new DelegateCommand<string>(AddNumber);
-            ClearCommand = new DelegateCommand(Clear);
             EqualsCommand = new DelegateCommand(Calculate);
-            LastCharacterDelate = new DelegateCommand(Delate);
+            ClearCommand = new DelegateCommand(Clear);
+            DelateLastCharCommand = new DelegateCommand(Delate);
         }
 
-        
         public void Calculate()
         {
-            
-            if(!(String.IsNullOrEmpty(Expression)))
-            { 
-            Expression = _calcualtor.Calculate(Expression).ToString("N2");
-            hasCalculated = true;
+
+            if (!(String.IsNullOrEmpty(Expression)))
+            {
+                Expression = _calcualtor.Calculate(Expression).ToString("N2");
+                hasCalculated = true;
             }
+
 
         }
         private void AddNumber(string buttonValue)
         {
-        
+            if (!(String.IsNullOrEmpty(Expression)))
+            {
+                if (!((buttonValue == "*" || buttonValue == "/") &&
+                      (Expression[Expression.Length - 1].ToString() == "*" ||
+                       Expression[Expression.Length - 1].ToString() == "/")))
+                {
+                    Expression += buttonValue.ToString();
+                }
+            }
+            else
+            {
+                Expression += buttonValue.ToString();
+            }
             if (hasCalculated)
             {
                 Clear();
                 hasCalculated = false;
             }
 
-            Expression += buttonValue.ToString();
         }
-
         private void Clear()
         {
             Expression = string.Empty;
+
         }
         public void Delate()
         {
-            Expression = Expression.Remove(Expression.Length - 1);
+            if (!(String.IsNullOrEmpty(Expression)))
+            {
+                string tmp = Expression;
+                Expression = tmp.Remove(Expression.Length - 1).ToString();
+            }
         }
+
     }
 }
