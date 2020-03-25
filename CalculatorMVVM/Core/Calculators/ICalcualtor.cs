@@ -9,5 +9,6 @@ namespace CalculatorMVVM.Core.Calculators
     public interface ICalcualtor
     {
         double Calculate(string expression);
+        bool last_character_checking(string expression);
     }
 }

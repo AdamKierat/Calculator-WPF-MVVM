@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using CalculatorMVVM.Core.Calculators;
 using CalculatorMVVM.ViewModels.Bases;
@@ -17,6 +18,8 @@ namespace CalculatorMVVM.ViewModels
         private readonly ICalcualtor _calcualtor;
         private bool hasCalculated;
         private bool DoubledCalcuclatorOperation = false;
+      
+        
 
         
 
@@ -45,12 +48,22 @@ namespace CalculatorMVVM.ViewModels
             DelateLastCharCommand = new DelegateCommand(Delate);
         }
 
-        public void Calculate()
+        public async void Calculate()
         {
 
             if (!(String.IsNullOrEmpty(Expression)))
             {
-                Expression = _calcualtor.Calculate(Expression).ToString("N2");
+                
+                if (!(_calcualtor.Calculate(Expression).ToString("N2") == "0,00"))
+                {
+                    Expression = _calcualtor.Calculate(Expression).ToString("N2");
+                }
+                else
+                {
+                    Expression = "Error";
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                    Clear();
+                }
                 hasCalculated = true;
             }
 
@@ -60,9 +73,10 @@ namespace CalculatorMVVM.ViewModels
         {
             if (!(String.IsNullOrEmpty(Expression)))
             {
-                if (!((buttonValue == "*" || buttonValue == "/") &&
-                      (Expression[Expression.Length - 1].ToString() == "*" ||
-                       Expression[Expression.Length - 1].ToString() == "/")))
+                if (!((buttonValue == "*" || buttonValue == "/" || buttonValue == "-"||buttonValue == "+") &&
+                      (Expression[Expression.Length - 1].ToString() == "*" || Expression[Expression.Length - 1].ToString() == "/" ||
+                       Expression[Expression.Length - 1].ToString() == "-" ||
+                       Expression[Expression.Length - 1].ToString() == "+")))
                 {
                     Expression += buttonValue.ToString();
                 }
@@ -70,6 +84,7 @@ namespace CalculatorMVVM.ViewModels
             else
             {
                 Expression += buttonValue.ToString();
+
             }
             if (hasCalculated)
             {
@@ -77,6 +92,7 @@ namespace CalculatorMVVM.ViewModels
                 hasCalculated = false;
             }
 
+           
         }
         private void Clear()
         {
